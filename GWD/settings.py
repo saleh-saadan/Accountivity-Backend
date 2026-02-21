@@ -25,13 +25,14 @@ SECRET_KEY = "django-insecure-#5t!is%ow$t$7%n$+m^s-#xh-k%p+36an6_cs#g=s!v17lg&^n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [  
+ALLOWED_HOSTS = [
     "http://localhost:8081",
-    "http://192.168.1.2:8081",  
-    "http://10.0.2.2:8081", 
-     "localhost",
+    "http://192.168.1.2:8081",
+    "http://10.0.2.2:8081",
+    "localhost",
     "192.168.1.2",
-    ]
+    "127.0.0.1:8000",
+]
 
 
 # Application definition
@@ -44,13 +45,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "users",
-    'rest_framework',               
-    'rest_framework_simplejwt',      
-    'corsheaders',                    
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -61,16 +62,15 @@ MIDDLEWARE = [
 ]
 
 
-
-CORS_ALLOW_ALL_ORIGINS = True  
+CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 ROOT_URLCONF = "GWD.urls"
 

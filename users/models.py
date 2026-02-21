@@ -2,6 +2,7 @@ import random
 import string
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 def generate_friend_id():
@@ -20,4 +21,28 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return "{} ({})".format(self.username, self.friend_id)
+        return f"{self.username} ({self.friend_id})"
+
+
+class Friendships(models.Model):
+    STATUS_CHOICES = (
+        ("pending", "Pending"),
+        ("accepted", "Accepted"),
+    )
+
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="sent_friendships", on_delete=models.CASCADE
+    )
+
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="received_friendships", on_delete=models.                                                                                            CASCADE
+    )
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("sender", "receiver")
+
+    def __str__(self):
+        return f"{self.sender} --> {self.receiver} ({self.status})"
