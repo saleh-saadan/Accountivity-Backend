@@ -135,3 +135,22 @@ class ListFriendsView(APIView):
         )
 
         return Response(serializer.data)
+
+
+class ListPendingRequestsView(APIView):
+    """
+    Display a list of the user's current pending requests
+    """
+
+    def get(self, request):
+
+        # Get a list of pending friend requests
+        friendships = Friendships.objects.filter(
+            receiver=request.user, status="pending"
+        )
+
+        serializer = FriendshipsSerializer(
+            friendships, many=True, context={"request": request}
+        )
+
+        return Response(serializer.data)
