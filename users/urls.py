@@ -45,4 +45,9 @@ urlpatterns = [
         views.ListPendingRequestsView.as_view(),
         name="friends_pending",
     ),
+    path(
+        "me/",
+         views.CurrentUserView.as_view(),
+        name="current_user"
+    ),
 ]

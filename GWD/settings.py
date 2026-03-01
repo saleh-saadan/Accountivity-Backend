@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "http://localhost:8081",
     "http://192.168.1.2:8081",
+    "192.168.1.47",
     "http://10.0.2.2:8081",
     "localhost",
     "192.168.1.2",
