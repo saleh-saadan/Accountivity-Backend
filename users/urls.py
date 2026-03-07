@@ -50,4 +50,8 @@ urlpatterns = [
          views.CurrentUserView.as_view(),
         name="current_user"
     ),
+    path(
+        'friends/pending/sent/', 
+        views.ListSentPendingRequestsView.as_view(),
+        name='friends_pending_sent'),
 ]

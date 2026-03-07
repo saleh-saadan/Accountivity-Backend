@@ -163,3 +163,16 @@ class CurrentUserView(APIView):
         return Response(serializer.data)
     
     
+class ListSentPendingRequestsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Pending requests sent by the current user
+        friendships = Friendships.objects.filter(
+            sender=request.user,
+            status="pending"
+        )
+        serializer = FriendshipsSerializer(
+            friendships, many=True, context={"request": request}
+        )
+        return Response(serializer.data)
