@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 
-def generate_friend_id():
+def generate_user_id():
     """
     Generates a random 5 character ID
     """
@@ -16,8 +16,8 @@ def generate_friend_id():
 
 class User(AbstractUser):
     # Generate unique friend ID for each user
-    friend_id = models.CharField(
-        max_length=5, default=generate_friend_id, unique=True, editable=False
+    user_id = models.CharField(
+        max_length=5, default=generate_user_id, primary_key=True, editable=False
     )
 
     def __str__(self):

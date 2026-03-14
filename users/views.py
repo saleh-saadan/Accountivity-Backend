@@ -42,12 +42,12 @@ class SendFriendRequestView(APIView):
 
         sender = request.user
 
-        # Get the receiver's friend_id
-        friend_id = request.data.get("friend_id")
+        # Get the receiver's user_id
+        user_id = request.data.get("user_id")
 
-        # Try to find user with friend_id
+        # Try to find user with user_id
         try:
-            receiver = User.objects.get(friend_id=friend_id)
+            receiver = User.objects.get(user_id=user_id)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=404)
 
@@ -86,7 +86,7 @@ class AcceptFriendRequestView(APIView):
 
         friendship = get_object_or_404(
             Friendships,
-            id=request.data.get("friend_id"),
+            id=request.data.get("user_id"),
             receiver=request.user,
             status="pending",
         )
@@ -107,7 +107,7 @@ class RejectFriendRequestView(APIView):
 
         friendship = get_object_or_404(
             Friendships,
-            id=request.data.get("friend_id"),
+            id=request.data.get("user_id"),
             receiver=request.user,
             status="pending",
         )
