@@ -21,7 +21,7 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return f"{self.username} ({self.friend_id})"
+        return f"{self.username} ({self.user_id})"
 
 
 class Friendships(models.Model):

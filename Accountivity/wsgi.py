@@ -1,5 +1,5 @@
 """
-WSGI config for GWD project.
+WSGI config for Accountivity project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'GWD.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Accountivity.settings')
 
 application = get_wsgi_application()
