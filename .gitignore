@@ -1,1 +1,15 @@
-.venv/
+*.pyc
+*~
+__pycache__
+.vscode/
+.history/
+*.code-workspace
+Thumbs.db*
+ehthumbs*.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+.venv
+.env
+myvenv/
+venv/
+db.sqlite3
