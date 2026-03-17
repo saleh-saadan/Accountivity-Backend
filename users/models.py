@@ -31,11 +31,15 @@ class Friendships(models.Model):
     )
 
     sender = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="sent_friendships", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        related_name="sent_friendships",
+        on_delete=models.CASCADE,
     )
 
     receiver = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="received_friendships", on_delete=models.                                                                                            CASCADE
+        settings.AUTH_USER_MODEL,
+        related_name="received_friendships",
+        on_delete=models.CASCADE,
     )
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
@@ -43,6 +47,7 @@ class Friendships(models.Model):
 
     class Meta:
         unique_together = ("sender", "receiver")
+        verbose_name_plural = "Friendships"
 
     def __str__(self):
         return f"{self.sender} --> {self.receiver} ({self.status})"
