@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import (
-    CustomTokenObtainPairSerializer,   # <-- this must be here
+    CustomTokenObtainPairSerializer,
     UserRegistrationSerializer,
     UserSerializer,
     FriendshipsSerializer,
@@ -19,7 +19,6 @@ User = get_user_model()
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-
 
 
 class RegisterView(generics.CreateAPIView):
@@ -153,7 +152,8 @@ class ListPendingRequestsView(APIView):
 
         # Get a list of pending friend requests
         friendships = Friendships.objects.filter(
-            receiver=request.user, status="pending"
+            receiver=request.user,
+            status="pending",
         )
 
         serializer = FriendshipsSerializer(
@@ -162,14 +162,15 @@ class ListPendingRequestsView(APIView):
 
         return Response(serializer.data)
 
+
 class CurrentUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
-    
-    
+
+
 class ListSentPendingRequestsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -177,7 +178,7 @@ class ListSentPendingRequestsView(APIView):
         # Pending requests sent by the current user
         friendships = Friendships.objects.filter(
             sender=request.user,
-            status="pending"
+            status="pending",
         )
         serializer = FriendshipsSerializer(
             friendships, many=True, context={"request": request}

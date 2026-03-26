@@ -10,11 +10,13 @@ def generate_user_id():
     Generates a random 5 character ID
     """
     # TODO: Find fix for possibly generating the same ID again, despite the low chances
+   
     characters = string.ascii_uppercase + string.digits
     return "".join(random.choice(characters) for _ in range(5))
 
 
 class User(AbstractUser):
+    
     # Generate unique friend ID for each user
     user_id = models.CharField(
         max_length=5, default=generate_user_id, primary_key=True, editable=False
@@ -25,6 +27,7 @@ class User(AbstractUser):
 
 
 class Friendships(models.Model):
+    
     STATUS_CHOICES = (
         ("pending", "Pending"),
         ("accepted", "Accepted"),
@@ -43,6 +46,7 @@ class Friendships(models.Model):
     )
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

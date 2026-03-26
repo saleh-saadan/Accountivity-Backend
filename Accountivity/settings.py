@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "users",
+    "tdlists",
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
