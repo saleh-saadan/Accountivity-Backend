@@ -1,5 +1,3 @@
-# users/urls.py
-
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
@@ -42,16 +40,16 @@ urlpatterns = [
     ),
     path(
         "friends/pending/",
-        views.ListPendingRequestsView.as_view(),
+        views.ListReceivedPendingRequestsView.as_view(),
         name="friends_pending",
-    ),
-    path(
-        "me/",
-         views.CurrentUserView.as_view(),
-        name="current_user"
     ),
     path(
         'friends/pending/sent/', 
         views.ListSentPendingRequestsView.as_view(),
         name='friends_pending_sent'),
+    path(
+        "me/",
+         views.CurrentUserView.as_view(),
+        name="current_user"
+    ),
 ]

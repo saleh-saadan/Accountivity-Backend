@@ -1,7 +1,6 @@
 from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import (
     CustomTokenObtainPairSerializer,
@@ -22,8 +21,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class RegisterView(generics.CreateAPIView):
-    serializer_class = UserRegistrationSerializer
     permission_classes = [permissions.AllowAny]
+    serializer_class = UserRegistrationSerializer
 
     def post(self, request, *args, **kwargs):
 
@@ -41,7 +40,7 @@ class RegisterView(generics.CreateAPIView):
 
 class SendFriendRequestView(APIView):
     """
-    Sends friend request to target user
+    Sends a friend request to target user
     """
 
     def post(self, request):
@@ -126,7 +125,7 @@ class RejectFriendRequestView(APIView):
 
 class ListFriendsView(APIView):
     """
-    Display a list of the user's current friends
+    Displays a list of the user's current friends
     """
 
     def get(self, request):
@@ -143,9 +142,9 @@ class ListFriendsView(APIView):
         return Response(serializer.data)
 
 
-class ListPendingRequestsView(APIView):
+class ListReceivedPendingRequestsView(APIView):
     """
-    Display a list of the user's current pending requests
+    Displays a list of the user's received pending requests
     """
 
     def get(self, request):
@@ -163,16 +162,10 @@ class ListPendingRequestsView(APIView):
         return Response(serializer.data)
 
 
-class CurrentUserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
-
-
 class ListSentPendingRequestsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    """
+    Displays a list of the user's sent pending requests
+    """
 
     def get(self, request):
         # Pending requests sent by the current user
@@ -183,4 +176,11 @@ class ListSentPendingRequestsView(APIView):
         serializer = FriendshipsSerializer(
             friendships, many=True, context={"request": request}
         )
+        return Response(serializer.data)
+    
+
+class CurrentUserView(APIView):
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
         return Response(serializer.data)

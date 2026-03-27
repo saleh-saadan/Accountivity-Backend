@@ -30,7 +30,7 @@ class Task(models.Model):
 
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    # Connects the task to a particular list
+    # Connects the task to a specific list
     list = models.ForeignKey(
         "TDList",
         on_delete=models.CASCADE,
