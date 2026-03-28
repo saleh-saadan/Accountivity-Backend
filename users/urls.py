@@ -39,9 +39,9 @@ urlpatterns = [
         name="friends_list",
     ),
     path(
-        "friends/pending/",
+        "friends/pending/received/",
         views.ListReceivedPendingRequestsView.as_view(),
-        name="friends_pending",
+        name="friends_pending_received",
     ),
     path(
         "friends/pending/sent/",
