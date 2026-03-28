@@ -44,12 +44,14 @@ urlpatterns = [
         name="friends_pending",
     ),
     path(
-        'friends/pending/sent/', 
+        "friends/pending/sent/",
         views.ListSentPendingRequestsView.as_view(),
-        name='friends_pending_sent'),
-    path(
-        "me/",
-         views.CurrentUserView.as_view(),
-        name="current_user"
+        name="friends_pending_sent",
     ),
+    path(
+        "friends/remove/",
+        views.RemoveFriendView.as_view(),
+        name="friend_remove",
+    ),
+    path("me/", views.CurrentUserView.as_view(), name="current_user"),
 ]

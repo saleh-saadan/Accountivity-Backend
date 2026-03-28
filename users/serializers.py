@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import User, Friendships
+from django.contrib.auth import get_user_model
+from .models import Friendships
+
+User = get_user_model()
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -63,13 +66,28 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ("user_id", "username", "email", "first_name", "last_name")
 
 
+class SendFriendRequestSerializer(serializers.Serializer):
+
+    # Takes the user_id and returns the User instance
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source="receiver")
+
+
+class FriendshipActionSerializer(serializers.Serializer):
+
+    # Takes the friendship_id and returns the Friendship instance
+    friendship_id = serializers.PrimaryKeyRelatedField(queryset=Friendships.objects.all(), source="friendship")
+        
+
 class FriendshipsSerializer(serializers.ModelSerializer):
+    
+    # Adds an extra field called username which is sent to front-end
     username = serializers.SerializerMethodField()
 
     class Meta:
         model = Friendships
         fields = ["id", "status", "username"]
 
+    # Figures out the friend in a Friendship instance and returns their username
     def get_username(self, obj):
         user = self.context["request"].user
         if obj.sender == user:
