@@ -61,34 +61,52 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Receives username, email, first_name and last_name from front-end
+    Sends user_id, username, email, first_name and last_name to front-end
+    """
+    
     class Meta:
         model = User
         fields = ("user_id", "username", "email", "first_name", "last_name")
 
 
 class SendFriendRequestSerializer(serializers.Serializer):
+    """
+    Receives user_id from front-end
+    """
 
-    # Takes the user_id and returns the User instance
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source="receiver")
+    user_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source="receiver"
+    )
 
 
-class FriendshipActionSerializer(serializers.Serializer):
+class UpdateFriendshipSerializer(serializers.Serializer):
+    """
+    Receives friendship_id from front-end
+    """
 
-    # Takes the friendship_id and returns the Friendship instance
-    friendship_id = serializers.PrimaryKeyRelatedField(queryset=Friendships.objects.all(), source="friendship")
-        
+    friendship_id = serializers.PrimaryKeyRelatedField(
+        queryset=Friendships.objects.all(), source="friendship"
+    )
 
-class FriendshipsSerializer(serializers.ModelSerializer):
-    
-    # Adds an extra field called username which is sent to front-end
+
+class FriendshipSerializer(serializers.ModelSerializer):
+    """
+    Sends friendship id, status and username of friend to front-end
+    """
+    # Adds an additional  field called username
     username = serializers.SerializerMethodField()
 
     class Meta:
         model = Friendships
-        fields = ["id", "status", "username"]
+        fields = ("id", "status", "username")
 
-    # Figures out the friend in a Friendship instance and returns their username
     def get_username(self, obj):
+        """
+        Figures out friend and returns their username
+        """
+        
         user = self.context["request"].user
         if obj.sender == user:
             friend = obj.receiver

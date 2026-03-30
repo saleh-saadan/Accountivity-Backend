@@ -7,8 +7,8 @@ from .serializers import (
     UserRegistrationSerializer,
     UserSerializer,
     SendFriendRequestSerializer,
-    FriendshipsSerializer,
-    FriendshipActionSerializer,
+    FriendshipSerializer,
+    UpdateFriendshipSerializer,
 )
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
@@ -27,7 +27,6 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
     def post(self, request, *args, **kwargs):
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -46,7 +45,6 @@ class SendFriendRequestView(APIView):
     """
 
     def post(self, request):
-
         sender = request.user
 
         serializer = SendFriendRequestSerializer(data=request.data)
@@ -57,7 +55,7 @@ class SendFriendRequestView(APIView):
             return Response({"error": "You cannot friend yourself"}, status=400)
 
         if Friendships.objects.filter(
-            (Q(sender=request.user) | Q(receiver=request.user)), status="accepted"
+            Q(sender=sender, receiver=receiver) | Q(sender=receiver, receiver=sender), status="accepted"
         ).exists():
             return Response({"error": "You are already friends"}, status=400)
 
@@ -87,8 +85,7 @@ class AcceptFriendRequestView(APIView):
     """
 
     def post(self, request):
-
-        serializer = FriendshipActionSerializer(data=request.data)
+        serializer = UpdateFriendshipSerializer(data=request.data)
         serializer.is_valid()
         friendship = serializer.validated_data["friendship"]
 
@@ -104,8 +101,7 @@ class RejectFriendRequestView(APIView):
     """
 
     def post(self, request):
-
-        serializer = FriendshipActionSerializer(data=request.data)
+        serializer = UpdateFriendshipSerializer(data=request.data)
         serializer.is_valid()
         friendship = serializer.validated_data["friendship"]
 
@@ -120,12 +116,11 @@ class ListFriendsView(APIView):
     """
 
     def get(self, request):
-
         friendships = Friendships.objects.filter(
             (Q(sender=request.user) | Q(receiver=request.user)), status="accepted"
         )
 
-        serializer = FriendshipsSerializer(
+        serializer = FriendshipSerializer(
             friendships, many=True, context={"request": request}
         )
 
@@ -138,13 +133,12 @@ class ListReceivedPendingRequestsView(APIView):
     """
 
     def get(self, request):
-
         friendships = Friendships.objects.filter(
             receiver=request.user,
             status="pending",
         )
 
-        serializer = FriendshipsSerializer(
+        serializer = FriendshipSerializer(
             friendships, many=True, context={"request": request}
         )
 
@@ -157,12 +151,11 @@ class ListSentPendingRequestsView(APIView):
     """
 
     def get(self, request):
-
         friendships = Friendships.objects.filter(
             sender=request.user,
             status="pending",
         )
-        serializer = FriendshipsSerializer(
+        serializer = FriendshipSerializer(
             friendships, many=True, context={"request": request}
         )
         return Response(serializer.data)
@@ -174,8 +167,7 @@ class RemoveFriendView(APIView):
     """
 
     def post(self, request):
-
-        serializer = FriendshipActionSerializer(data=request.data)
+        serializer = UpdateFriendshipSerializer(data=request.data)
         serializer.is_valid()
         friendship = serializer.validated_data["friendship"]
 
@@ -187,6 +179,5 @@ class RemoveFriendView(APIView):
 class CurrentUserView(APIView):
 
     def get(self, request):
-
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
