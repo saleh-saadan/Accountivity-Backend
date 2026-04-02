@@ -19,8 +19,7 @@ class TaskSerializer(serializers.ModelSerializer):
     Receives name of task and id of list from front-end
     Sends task id, name, creator id, list id, completed, and created to front-end
     """
-    creator = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-
+    creator = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Task
         fields = ("id", "name", "creator", "list", "completed", "created")
@@ -60,7 +59,7 @@ class TDListSerializer(serializers.ModelSerializer):
         queryset=User.objects.all(), many=True, write_only=True
     )
     member_info = MemberSerializer(read_only=True, many=True, source="members")
-    tasks = TaskSerializer(read_only=True, many=True, source="tasks")
+    tasks = TaskSerializer(read_only=True, many=True)
 
     class Meta:
         model = TDList
